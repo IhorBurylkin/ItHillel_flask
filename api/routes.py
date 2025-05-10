@@ -17,6 +17,8 @@ def route_test():
 def route_test_2():
     return jsonify({"message": "Hello 2"}), 200
 
-
+@bp.route("/health")
+def health():
+    return jsonify({"status": "ok"}), 200
 
 

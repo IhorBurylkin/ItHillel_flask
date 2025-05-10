@@ -10,7 +10,13 @@ students_bp = Blueprint("students_bp", __name__, url_prefix="/students")
 
 @students_bp.route("/", methods=["GET"])
 def get_all_students():
-    students = Student.query.all()
+    name_query = request.args.get('name', '')
+    
+    if name_query:
+        students = Student.query.filter(Student.name.ilike(f'%{name_query}%')).all()
+    else:
+        students = Student.query.all()
+    
     return jsonify({"students": [StudentReadModel.model_validate(s).model_dump(mode="json") for s in students]})
 
 @students_bp.route("/<int:pk>", methods=["GET"])
